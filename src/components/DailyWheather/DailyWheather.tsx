@@ -10,7 +10,7 @@ export const DailyWheather: React.FC<IProps> = ({ daily }) => {
     <>
       {daily.map((item) => {
         return (
-          <div>
+          <div key={item.time}>
             {item.time} {item.temp}
           </div>
         );
