@@ -7,6 +7,7 @@ import { DailyWheather } from "../../components/DailyWheather/DailyWheather";
 import { DefaultCitiesBtns } from "./components/DefaultCitiesBtns";
 
 export const Home: React.FC = () => {
+  // const [location, setLocation] = useState<GeolocationCoordinates | null>(null);
   const [dailyWheather, setDailyWeather] = useState<IDailyWheather[] | null>(
     null
   );
@@ -14,20 +15,38 @@ export const Home: React.FC = () => {
     useState<TCurrentWeatherData | null>(null);
 
   useEffect(() => {
-    const fetch = () => {
-      const data = getDailyWheather(HOME_FORECAST_DURATION);
-      return data;
-    };
-    fetch().then((data) => {
-      setDailyWeather(data.dailyWheather);
-      setCurrentWeather(data.currentWheather);
-    });
-    // if (navigator?.geolocation) {
-    //   navigator.geolocation.getCurrentPosition((location) => {
-    //     if (location) console.log(location);
-    //   });
-    // }
+    if (navigator?.geolocation) {
+      navigator.geolocation.getCurrentPosition((location) => {
+        if (location) {
+          const fetch = () => {
+            const data = getDailyWheather(
+              HOME_FORECAST_DURATION,
+              location.coords?.latitude,
+              location.coords?.longitude
+            );
+            return data;
+          };
+          fetch().then((data) => {
+            setDailyWeather(data.dailyWheather);
+            setCurrentWeather(data.currentWheather);
+          });
+        }
+      });
+    }
   }, []);
+
+  useEffect(() => {
+    if (!dailyWheather) {
+      const fetch = () => {
+        const data = getDailyWheather(HOME_FORECAST_DURATION);
+        return data;
+      };
+      fetch().then((data) => {
+        setDailyWeather(data.dailyWheather);
+        setCurrentWeather(data.currentWheather);
+      });
+    }
+  }, [dailyWheather]);
 
   const changeDefaultCity = (lt: number, lg: number) => {
     const fetch = () => {

@@ -4,8 +4,8 @@ import { dailyWeatherParser } from "./dataParsers";
 
 export const getDailyWheather = async (
   duration: number,
-  lt: number = DEFAULT_LIST_CITIES[0].latitude,
-  lg: number = DEFAULT_LIST_CITIES[0].longitude
+  lt: number = DEFAULT_LIST_CITIES[1].latitude,
+  lg: number = DEFAULT_LIST_CITIES[1].longitude
 ) => {
   const response = await axios.get(BASE_URL, {
     params: {

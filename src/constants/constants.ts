@@ -10,7 +10,6 @@ export const DEFAULT_LIST_CITIES: IDefailtCities[] = [
     name: "Minsk",
     latitude: 53.9,
     longitude: 27.5,
-    isDefault: true,
   },
   {
     name: "Moscow",
