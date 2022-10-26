@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getDailyWheather, cityByDefault } from "../../api/api";
 import { IDailyWheather, TCurrentWeatherData } from "../../api/types";
 import { ICityLocationState } from "./types/types";
@@ -19,6 +20,8 @@ export const Home: React.FC = () => {
   );
   const [currentWeather, setCurrentWeather] =
     useState<TCurrentWeatherData | null>(null);
+
+  const navigate = useNavigate();
 
   const fetchData = (lt?: number, lg?: number): void => {
     const fetch = () => {
@@ -55,6 +58,10 @@ export const Home: React.FC = () => {
       );
     }
   }, []);
+
+  useEffect(() => {
+    if (cityLocation?.cityName) navigate(`/${cityLocation?.cityName}`);
+  }, [cityLocation]);
 
   const changeDefaultCity = (lt: number, lg: number) => {
     if (lt === cityLocation?.lt && lg === cityLocation.lg) return;
