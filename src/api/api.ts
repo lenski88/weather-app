@@ -7,7 +7,7 @@ import {
 } from "../constants/constants";
 import { dailyWeatherParser } from "./dataParsers";
 
-const cityByDefault = DEFAULT_LIST_CITIES.find(
+export const cityByDefault = DEFAULT_LIST_CITIES.find(
   (item) => item.isDefault
 ) as IDefailtCities;
 

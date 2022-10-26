@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { getDailyWheather } from "../../api/api";
+import { getDailyWheather, cityByDefault } from "../../api/api";
 import { IDailyWheather, TCurrentWeatherData } from "../../api/types";
-import { HOME_FORECAST_DURATION } from "../../constants/constants";
+import { ICityLocationState } from "./types/types";
+import {
+  DEFAULT_LIST_CITIES,
+  HOME_FORECAST_DURATION,
+} from "../../constants/constants";
 
 import { DailyWheather } from "../../components/DailyWheather/DailyWheather";
 import { DefaultCitiesBtns } from "./components/DefaultCitiesBtns";
 
 export const Home: React.FC = () => {
-  // const [location, setLocation] = useState<GeolocationCoordinates | null>(null);
+  const [cityLocation, setCityLocation] = useState<ICityLocationState | null>(
+    null
+  );
   const [dailyWheather, setDailyWeather] = useState<IDailyWheather[] | null>(
     null
   );
@@ -30,15 +36,35 @@ export const Home: React.FC = () => {
       navigator.geolocation.getCurrentPosition(
         (location) => {
           if (location) {
+            setCityLocation({
+              lt: location.coords?.latitude,
+              lg: location.coords?.longitude,
+              cityName: "Unknown",
+            });
             fetchData(location.coords?.latitude, location.coords?.longitude);
           }
         },
-        () => fetchData()
+        () => {
+          setCityLocation({
+            lt: cityByDefault.latitude,
+            lg: cityByDefault.longitude,
+            cityName: cityByDefault.name,
+          });
+          fetchData();
+        }
       );
     }
   }, []);
 
   const changeDefaultCity = (lt: number, lg: number) => {
+    if (lt === cityLocation?.lt && lg === cityLocation.lg) return;
+    setCityLocation({
+      lt,
+      lg,
+      cityName: DEFAULT_LIST_CITIES.find(
+        (item) => item.latitude === lt && item.longitude === lg
+      )?.name as string,
+    });
     const fetch = () => {
       const data = getDailyWheather(HOME_FORECAST_DURATION, lt, lg);
       return data;
@@ -51,6 +77,7 @@ export const Home: React.FC = () => {
 
   return dailyWheather ? (
     <div>
+      <p>{cityLocation?.cityName}</p>
       <p>
         {currentWeather?.time} {currentWeather?.temperature}
       </p>
