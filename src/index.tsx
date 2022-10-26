@@ -1,8 +1,14 @@
-import React from "react";
+import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes";
 
 function App() {
-  return <div/>;
+  return (
+    <StrictMode>
+      <RouterProvider router={router} />
+    </StrictMode>
+  );
 }
 
 const container = document.getElementById("root");
