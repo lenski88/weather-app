@@ -24,8 +24,9 @@ export const dailyWeatherParser = (
   },
   duration: number
 ) => {
-  const date = data.daily.time.slice(1, duration + 1);
-  const temp = data.daily.temperature_2m_max.slice(1, duration + 1);
+  const lastItem = duration + 1;
+  const date = data.daily.time.slice(1, lastItem);
+  const temp = data.daily.temperature_2m_max.slice(1, lastItem);
   const dailyWheather = date.reduce(
     (acc: IDailyWheather[], v: Date, i: number): IDailyWheather[] => {
       acc.push({
