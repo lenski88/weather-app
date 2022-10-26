@@ -1,4 +1,4 @@
-interface IDefailtCities {
+export interface IDefailtCities {
   name: string;
   latitude: number;
   longitude: number;
