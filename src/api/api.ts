@@ -1,11 +1,20 @@
 import axios from "axios";
-import { BASE_URL, DEFAULT_LIST_CITIES, PARAMS } from "../constants/constants";
+import {
+  BASE_URL,
+  DEFAULT_LIST_CITIES,
+  IDefailtCities,
+  PARAMS,
+} from "../constants/constants";
 import { dailyWeatherParser } from "./dataParsers";
+
+const cityByDefault = DEFAULT_LIST_CITIES.find(
+  (item) => item.isDefault
+) as IDefailtCities;
 
 export const getDailyWheather = async (
   duration: number,
-  lt: number = DEFAULT_LIST_CITIES[0].latitude,
-  lg: number = DEFAULT_LIST_CITIES[0].longitude
+  lt: number = cityByDefault.latitude,
+  lg: number = cityByDefault.longitude
 ) => {
   const response = await axios.get(BASE_URL, {
     params: {

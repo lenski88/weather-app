@@ -7,26 +7,35 @@ import { DailyWheather } from "../../components/DailyWheather/DailyWheather";
 import { DefaultCitiesBtns } from "./components/DefaultCitiesBtns";
 
 export const Home: React.FC = () => {
+  // const [location, setLocation] = useState<GeolocationCoordinates | null>(null);
   const [dailyWheather, setDailyWeather] = useState<IDailyWheather[] | null>(
     null
   );
   const [currentWeather, setCurrentWeather] =
     useState<TCurrentWeatherData | null>(null);
 
-  useEffect(() => {
+  const fetchData = (lt?: number, lg?: number): void => {
     const fetch = () => {
-      const data = getDailyWheather(HOME_FORECAST_DURATION);
+      const data = getDailyWheather(HOME_FORECAST_DURATION, lt, lg);
       return data;
     };
     fetch().then((data) => {
       setDailyWeather(data.dailyWheather);
       setCurrentWeather(data.currentWheather);
     });
-    // if (navigator?.geolocation) {
-    //   navigator.geolocation.getCurrentPosition((location) => {
-    //     if (location) console.log(location);
-    //   });
-    // }
+  };
+
+  useEffect(() => {
+    if (navigator?.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (location) => {
+          if (location) {
+            fetchData(location.coords?.latitude, location.coords?.longitude);
+          }
+        },
+        () => fetchData()
+      );
+    }
   }, []);
 
   const changeDefaultCity = (lt: number, lg: number) => {
