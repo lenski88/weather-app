@@ -3,10 +3,17 @@ import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes";
 
+import { GlobalStyle } from "./globalStyle";
+
+import { MainContainer } from "./components/MainContainer/MainContainer";
+
 function App() {
   return (
     <StrictMode>
-      <RouterProvider router={router} />
+      <GlobalStyle />
+      <MainContainer>
+        <RouterProvider router={router} />
+      </MainContainer>
     </StrictMode>
   );
 }
