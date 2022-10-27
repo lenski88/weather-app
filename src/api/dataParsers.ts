@@ -82,7 +82,10 @@ export const hourltWeatherParser = (
 };
 
 export const cityNameParser = (data: ILocationInfoResponse) => data.city;
-export const cityCoordsParser = (data: ICityCoordsResponse) => ({
-  latitude: data.latitude,
-  longitude: data.longitude,
-});
+export const cityCoordsParser = (data: ICityCoordsResponse) => {
+  if (!data) return null;
+  return {
+    latitude: data.latitude,
+    longitude: data.longitude,
+  };
+};

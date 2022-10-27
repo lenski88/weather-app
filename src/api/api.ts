@@ -71,6 +71,6 @@ export const getCoordsByCityName = async (name: string) => {
       count: PARAMS.countCity,
     },
   });
-  const data = cityCoordsParser(response.data.results[0]);
+  const data = cityCoordsParser(response.data?.results?.[0]);
   return data;
 };
