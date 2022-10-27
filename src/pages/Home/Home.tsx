@@ -35,32 +35,45 @@ export const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    if (navigator?.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (location) => {
-          if (location) {
+    if (!localStorage.getItem("location")) {
+      if (navigator?.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (location) => {
+            if (location) {
+              setCityLocation({
+                lt: location.coords?.latitude,
+                lg: location.coords?.longitude,
+                cityName: "Unknown",
+              });
+              fetchData(location.coords?.latitude, location.coords?.longitude);
+            }
+          },
+          () => {
             setCityLocation({
-              lt: location.coords?.latitude,
-              lg: location.coords?.longitude,
-              cityName: "Unknown",
+              lt: cityByDefault.latitude,
+              lg: cityByDefault.longitude,
+              cityName: cityByDefault.name,
             });
-            fetchData(location.coords?.latitude, location.coords?.longitude);
+            fetchData();
           }
-        },
-        () => {
-          setCityLocation({
-            lt: cityByDefault.latitude,
-            lg: cityByDefault.longitude,
-            cityName: cityByDefault.name,
-          });
-          fetchData();
-        }
-      );
+        );
+      }
+    } else {
+      const storage = JSON.parse(localStorage.getItem("location") as string);
+      setCityLocation({
+        lt: storage.lt,
+        lg: storage.lg,
+        cityName: storage.cityName,
+      });
+      fetchData(storage.lt, storage.lg);
     }
   }, []);
 
   useEffect(() => {
-    if (cityLocation?.cityName) navigate(`/${cityLocation?.cityName}`);
+    if (cityLocation?.cityName) {
+      navigate(`/${cityLocation?.cityName}`);
+      localStorage.setItem("location", JSON.stringify(cityLocation));
+    }
   }, [cityLocation]);
 
   const changeDefaultCity = (lt: number, lg: number) => {
