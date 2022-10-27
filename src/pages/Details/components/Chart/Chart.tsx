@@ -7,9 +7,12 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-import { IHourlyWeather } from "../../../api/types";
+import { IHourlyWeather } from "../../../../api/types";
 
-import { COLORS, HOURLY_FORECAST_DURATION } from "../../../constants/constants";
+import {
+  COLORS,
+  HOURLY_FORECAST_DURATION,
+} from "../../../../constants/constants";
 import { ChartStyle } from "./ChartStyle";
 
 interface IProps {
