@@ -3,7 +3,7 @@ import { ButtonStyle } from "./ButtonStyle";
 
 interface IProps {
   children: string;
-  id: string;
+  id?: string;
   onClick: (eo: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
