@@ -6,7 +6,11 @@ import {
   IDefailtCities,
   PARAMS,
 } from "../constants/constants";
-import { dailyWeatherParser, cityNameParser } from "./dataParsers";
+import {
+  dailyWeatherParser,
+  cityNameParser,
+  hourltWeatherParser,
+} from "./dataParsers";
 
 export const cityByDefault = DEFAULT_LIST_CITIES.find(
   (item) => item.isDefault
@@ -27,6 +31,22 @@ export const getDailyWheather = async (
     },
   });
   const data = dailyWeatherParser(response, duration);
+  return data;
+};
+
+export const getHourlyWeather = async (
+  duration: number,
+  lt: number,
+  lg: number
+) => {
+  const response = await axios.get(BASE_URL_FORECAST, {
+    params: {
+      latitude: lt,
+      longitude: lg,
+      hourly: PARAMS.hourly,
+    },
+  });
+  const data = hourltWeatherParser(response.data, duration);
   return data;
 };
 

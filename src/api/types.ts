@@ -22,7 +22,10 @@ export interface ILocationInfoResponse {
   countryName: string;
   latitude: number;
   locality: string;
-  localityInfo: TLocalityInfo;
+  localityInfo: {
+    administrative: TLocalityInfo;
+    informative: TInformativeLocalityInfo;
+  };
   localityLanguageRequested: string;
   longitude: number;
   lookupSource: number;
@@ -32,8 +35,7 @@ export interface ILocationInfoResponse {
   principalSubdivisionCode: string;
 }
 
-type TLocalityInfo = [ILocationInfo, ILocationInfo, IDistrictLocalityInfo];
-
+type TLocalityInfo = [ILocationInfo, ILocationInfo, TDistrictLocalityInfo];
 interface ILocationInfo {
   adminLevel: number;
   description: string;
@@ -45,7 +47,27 @@ interface ILocationInfo {
   wikidataId: string;
 }
 
-type IDistrictLocalityInfo = Omit<ILocationInfo, "isoCode">;
+type TDistrictLocalityInfo = Omit<ILocationInfo, "isoCode">;
+type TInfomativeInfo = Omit<TDistrictLocalityInfo, "adminLevel">;
+type TInformativeLocalityInfo = [TInfomativeInfo, TInfomativeInfo];
+
+export interface IHourlyWeatherResponse {
+  elevation: number;
+  generationtime_ms: number;
+  hourly: {
+    temperature_2m: number[];
+    time: Date[];
+  };
+  hourly_units: {
+    time: string;
+    temperature_2m: string;
+  };
+  latitude: number;
+  longitude: number;
+  timezone: string;
+  timezone_abbreviation: string;
+  utc_offset_seconds: number;
+}
 
 export interface ICurrentWeather {
   temperature: number | string;
@@ -63,6 +85,11 @@ export type TCurrentWeatherData = Pick<
 export interface IDailyWheather {
   time: string;
   temp: string;
+}
+
+export interface IHourlyWeather {
+  time: string;
+  temp: number;
 }
 
 export interface IUnits {
