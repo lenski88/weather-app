@@ -4,6 +4,8 @@ import {
   ICurrentWeather,
   IUnits,
   ILocationInfoResponse,
+  IHourlyWeatherResponse,
+  IHourlyWeather,
 } from "./types";
 import { formatDateTime } from "../utils/utils";
 import { months } from "../constants/constants";
@@ -48,6 +50,34 @@ export const dailyWeatherParser = (
     dailyWheather,
     currentWheather,
   };
+};
+
+export const hourltWeatherParser = (
+  data: IHourlyWeatherResponse,
+  duration: number
+) => {
+  const lastitem = duration + 1;
+  const now = Date.now();
+  let tempFrom = 0;
+  const time = data.hourly.time
+    .filter((v, i) => {
+      if (new Date(v).getTime() < now) tempFrom = i;
+      return new Date(v).getTime() >= now;
+    })
+    .slice(0, duration);
+  const temp = data.hourly.temperature_2m.slice(tempFrom, tempFrom + lastitem);
+  return time.reduce((acc: IHourlyWeather[], item: Date, i: number) => {
+    const date = new Date(item);
+    const hours = String(date.getHours());
+    const mins = String(date.getMinutes());
+    acc.push({
+      time: `${hours.length === 1 ? `0${hours}` : hours}:${
+        mins.length === 1 ? `0${mins}` : mins
+      }`,
+      temp: temp[i],
+    });
+    return acc;
+  }, []);
 };
 
 export const cityNameParser = (data: ILocationInfoResponse) => data.city;

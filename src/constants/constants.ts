@@ -33,6 +33,7 @@ export const DEFAULT_LIST_CITIES: IDefailtCities[] = [
 ];
 
 export const HOME_FORECAST_DURATION = 3;
+export const HOURLY_FORECAST_DURATION = 10;
 
 export const months = [
   "january",
@@ -55,6 +56,7 @@ export const BASE_URL_CITY_INFO =
 
 export const PARAMS = {
   daily: "temperature_2m_max",
-  timezone: "GMT",
+  hourly: "temperature_2m",
+  timezone: "auto",
   locale: "en",
 };
