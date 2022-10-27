@@ -16,9 +16,10 @@ export const SearchCity: React.FC<IProps> = ({ cbChangeCity }) => {
 
   const changeCityHandler = () => {
     if (!input.length) return;
-    cbChangeCity(input);
+    cbChangeCity(input.toLowerCase());
     setInput("");
   };
+
   return (
     <SearchCityStyle>
       <InputStyle type="text" value={input} onChange={changeHandler} />

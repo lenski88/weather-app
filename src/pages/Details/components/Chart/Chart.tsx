@@ -17,12 +17,19 @@ import { ChartStyle } from "./ChartStyle";
 
 interface IProps {
   data: IHourlyWeather[];
+  city: string;
 }
 
-export const Chart: React.FC<IProps> = ({ data }) => {
+export const Chart: React.FC<IProps> = ({ data, city }) => {
   return (
     <ChartStyle>
-      <p>Hourly weather forecast for {HOURLY_FORECAST_DURATION} hours</p>
+      <p>
+        Hourly weather forecast for {HOURLY_FORECAST_DURATION} hours in{" "}
+        {city
+          .split(" ")
+          .map((item) => `${item[0].toUpperCase()}${item.slice(1)}`)
+          .join(" ")}
+      </p>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
           width={500}

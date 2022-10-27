@@ -54,9 +54,13 @@ export const BASE_URL_FORECAST = "https://api.open-meteo.com/v1/forecast";
 export const BASE_URL_CITY_INFO =
   "https://api.bigdatacloud.net/data/reverse-geocode-client";
 
+export const BASE_URL_GET_COORDS =
+  "https://geocoding-api.open-meteo.com/v1/search";
+
 export const PARAMS = {
   daily: "temperature_2m_max",
   hourly: "temperature_2m",
   timezone: "auto",
   locale: "en",
+  countCity: 1,
 };

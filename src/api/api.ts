@@ -5,11 +5,13 @@ import {
   DEFAULT_LIST_CITIES,
   IDefailtCities,
   PARAMS,
+  BASE_URL_GET_COORDS,
 } from "../constants/constants";
 import {
   dailyWeatherParser,
   cityNameParser,
   hourltWeatherParser,
+  cityCoordsParser,
 } from "./dataParsers";
 
 export const cityByDefault = DEFAULT_LIST_CITIES.find(
@@ -60,4 +62,15 @@ export const getCityInfoByCoords = async (lt: number, lg: number) => {
   });
   const city = cityNameParser(response.data);
   return city;
+};
+
+export const getCoordsByCityName = async (name: string) => {
+  const response = await axios.get(BASE_URL_GET_COORDS, {
+    params: {
+      name,
+      count: PARAMS.countCity,
+    },
+  });
+  const data = cityCoordsParser(response.data.results[0]);
+  return data;
 };
