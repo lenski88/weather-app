@@ -49,9 +49,12 @@ export const months = [
   "december",
 ];
 
-export const BASE_URL = "https://api.open-meteo.com/v1/forecast";
+export const BASE_URL_FORECAST = "https://api.open-meteo.com/v1/forecast";
+export const BASE_URL_CITY_INFO =
+  "https://api.bigdatacloud.net/data/reverse-geocode-client";
 
 export const PARAMS = {
   daily: "temperature_2m_max",
   timezone: "GMT",
+  locale: "en",
 };

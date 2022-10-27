@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getDailyWheather, cityByDefault } from "../../api/api";
+import {
+  getDailyWheather,
+  cityByDefault,
+  getCityInfoByCoords,
+} from "../../api/api";
 import { IDailyWheather, TCurrentWeatherData } from "../../api/types";
 import { ICityLocationState } from "./types/types";
 import {
@@ -26,7 +30,7 @@ export const Home: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const fetchData = (lt?: number, lg?: number): void => {
+  const fetchWeather = (lt?: number, lg?: number): void => {
     const fetch = () => {
       const data = getDailyWheather(HOME_FORECAST_DURATION, lt, lg);
       return data;
@@ -37,18 +41,34 @@ export const Home: React.FC = () => {
     });
   };
 
+  const fetchCityName = (lt: number, lg: number): void => {
+    const fetch = () => {
+      const data = getCityInfoByCoords(lt, lg);
+      return data;
+    };
+    fetch().then((data) => {
+      setCityLocation({
+        lt,
+        lg,
+        cityName: data,
+      });
+    });
+  };
+
   useEffect(() => {
     if (!localStorage.getItem("location")) {
       if (navigator?.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (location) => {
             if (location) {
-              setCityLocation({
-                lt: location.coords?.latitude,
-                lg: location.coords?.longitude,
-                cityName: "Unknown",
-              });
-              fetchData(location.coords?.latitude, location.coords?.longitude);
+              fetchCityName(
+                location.coords?.latitude,
+                location.coords?.longitude
+              );
+              fetchWeather(
+                location.coords?.latitude,
+                location.coords?.longitude
+              );
             }
           },
           () => {
@@ -57,7 +77,7 @@ export const Home: React.FC = () => {
               lg: cityByDefault.longitude,
               cityName: cityByDefault.name,
             });
-            fetchData();
+            fetchWeather();
           }
         );
       }
@@ -68,7 +88,7 @@ export const Home: React.FC = () => {
         lg: storage.lg,
         cityName: storage.cityName,
       });
-      fetchData(storage.lt, storage.lg);
+      fetchWeather(storage.lt, storage.lg);
     }
   }, []);
 
