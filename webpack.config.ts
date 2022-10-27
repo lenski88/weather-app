@@ -33,6 +33,7 @@ const config: Configuration = {
   output: {
     path: path.resolve(__dirname, "build"),
     filename: "bundle.js",
+    publicPath: "/",
   },
   devServer: {
     static: path.join(__dirname, "build"),
