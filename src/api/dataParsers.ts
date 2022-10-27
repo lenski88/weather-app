@@ -3,6 +3,7 @@ import {
   IDailyWheather,
   ICurrentWeather,
   IUnits,
+  ILocationInfoResponse,
 } from "./types";
 import { formatDateTime } from "../utils/utils";
 import { months } from "../constants/constants";
@@ -48,3 +49,5 @@ export const dailyWeatherParser = (
     currentWheather,
   };
 };
+
+export const cityNameParser = (data: ILocationInfoResponse) => data.city;
