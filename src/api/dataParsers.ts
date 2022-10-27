@@ -6,6 +6,7 @@ import {
   ILocationInfoResponse,
   IHourlyWeatherResponse,
   IHourlyWeather,
+  ICityCoordsResponse,
 } from "./types";
 import { formatDateTime } from "../utils/utils";
 import { months } from "../constants/constants";
@@ -81,3 +82,7 @@ export const hourltWeatherParser = (
 };
 
 export const cityNameParser = (data: ILocationInfoResponse) => data.city;
+export const cityCoordsParser = (data: ICityCoordsResponse) => ({
+  latitude: data.latitude,
+  longitude: data.longitude,
+});
