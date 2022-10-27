@@ -3,11 +3,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getCoordsByCityName, getHourlyWeather } from "../../api/api";
 import { IHourlyWeather } from "../../api/types";
 import { HOURLY_FORECAST_DURATION } from "../../constants/constants";
+import { cityNameFormat } from "../../utils/utils";
 import { Chart } from "./components/Chart/Chart";
 import { SearchCity } from "./components/SearchCity/SearchCity";
 
 export const Details: React.FC = () => {
   const [city, setCity] = useState<string | undefined>();
+  const [legend, setLegend] = useState<string>("");
   const [houryWeather, setHourlyWeather] = useState<IHourlyWeather[] | null>(
     null
   );
@@ -31,7 +33,15 @@ export const Details: React.FC = () => {
       return data;
     };
     fetch().then((data) => {
+      if (!data) {
+        setLegend(`${city} not found`);
+        return;
+      }
       fetchHourlyWeather(data.latitude, data.longitude);
+
+      if (city)
+        setLegend(`Hourly weather forecast for ${HOURLY_FORECAST_DURATION} hours in
+      ${cityNameFormat(city)}`);
     });
   };
 
@@ -51,14 +61,14 @@ export const Details: React.FC = () => {
     }
   }, [city]);
 
-  const changeCity = (name: string) => setCity(name);
+  const changeCity = (name: string) => {
+    setCity(name);
+  };
 
   return (
     <div>
       <SearchCity cbChangeCity={changeCity} />
-      {houryWeather ? (
-        <Chart data={houryWeather} city={city as string} />
-      ) : null}
+      {houryWeather && <Chart data={houryWeather} legend={legend} />}
     </div>
   );
 };

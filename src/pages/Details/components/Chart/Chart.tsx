@@ -9,27 +9,18 @@ import {
 } from "recharts";
 import { IHourlyWeather } from "../../../../api/types";
 
-import {
-  COLORS,
-  HOURLY_FORECAST_DURATION,
-} from "../../../../constants/constants";
+import { COLORS } from "../../../../constants/constants";
 import { ChartStyle } from "./ChartStyle";
 
 interface IProps {
   data: IHourlyWeather[];
-  city: string;
+  legend: string;
 }
 
-export const Chart: React.FC<IProps> = ({ data, city }) => {
+export const Chart: React.FC<IProps> = ({ data, legend }) => {
   return (
     <ChartStyle>
-      <p>
-        Hourly weather forecast for {HOURLY_FORECAST_DURATION} hours in{" "}
-        {city
-          .split(" ")
-          .map((item) => `${item[0].toUpperCase()}${item.slice(1)}`)
-          .join(" ")}
-      </p>
+      <p>{legend}</p>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
           width={500}
