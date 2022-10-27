@@ -56,7 +56,7 @@ export const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem("location")) {
+    if (!sessionStorage.getItem("location")) {
       if (navigator?.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (location) => {
@@ -82,7 +82,7 @@ export const Home: React.FC = () => {
         );
       }
     } else {
-      const storage = JSON.parse(localStorage.getItem("location") as string);
+      const storage = JSON.parse(sessionStorage.getItem("location") as string);
       setCityLocation({
         lt: storage.lt,
         lg: storage.lg,
@@ -95,7 +95,7 @@ export const Home: React.FC = () => {
   useEffect(() => {
     if (cityLocation?.cityName) {
       navigate(`/${cityLocation?.cityName}`);
-      localStorage.setItem("location", JSON.stringify(cityLocation));
+      sessionStorage.setItem("location", JSON.stringify(cityLocation));
     }
   }, [cityLocation]);
 
