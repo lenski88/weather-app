@@ -5,6 +5,14 @@ export interface IDefailtCities {
   isDefault?: boolean;
 }
 
+export const COLORS = {
+  backgroundBody: "#1F3044",
+  backgroundContainer: "#646C79",
+  backgroundCard: "#FB9039",
+  fontColor: "#FFFFFF",
+  borderColor: "#FB9039",
+};
+
 export const DEFAULT_LIST_CITIES: IDefailtCities[] = [
   {
     name: "Minsk",

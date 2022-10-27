@@ -8,8 +8,11 @@ import {
   HOME_FORECAST_DURATION,
 } from "../../constants/constants";
 
+import { CurrentWeather } from "./components/CurrentWeather/CurrentWeather";
 import { DailyWheather } from "../../components/DailyWheather/DailyWheather";
-import { DefaultCitiesBtns } from "./components/DefaultCitiesBtns";
+import { DefaultCitiesBtns } from "./components/DefaultCitiesBtns/DefaultCitiesBtns";
+
+import { HomeStyle } from "./HomeStyle";
 
 export const Home: React.FC = () => {
   const [cityLocation, setCityLocation] = useState<ICityLocationState | null>(
@@ -96,13 +99,13 @@ export const Home: React.FC = () => {
   };
 
   return dailyWheather ? (
-    <div>
-      <p>{cityLocation?.cityName}</p>
-      <p>
-        {currentWeather?.time} {currentWeather?.temperature}
-      </p>
+    <HomeStyle>
+      <CurrentWeather
+        city={cityLocation?.cityName}
+        currentWeather={currentWeather}
+      />
       <DailyWheather daily={dailyWheather} />
       <DefaultCitiesBtns cbChangeDefaultCity={changeDefaultCity} />
-    </div>
+    </HomeStyle>
   ) : null;
 };

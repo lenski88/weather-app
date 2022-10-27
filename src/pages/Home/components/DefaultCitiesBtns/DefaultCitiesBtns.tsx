@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { Button } from "../../../../components/Button/Button";
 import {
   DEFAULT_LIST_CITIES,
   IDefailtCities,
-} from "../../../constants/constants";
+} from "../../../../constants/constants";
+import { DefaultCitiesBtnsStyle } from "./DefaultCitiesBtnsStyle";
 
 interface IProps {
   cbChangeDefaultCity: (lt: number, lg: number) => void;
@@ -13,7 +15,7 @@ export const DefaultCitiesBtns: React.FC<IProps> = ({
 }) => {
   const [citiesList] = useState(DEFAULT_LIST_CITIES);
 
-  const changeCityHandler = (eo: React.MouseEvent<HTMLButtonElement>) => {
+  const changeCityHandler = (eo: React.MouseEvent<HTMLButtonElement>): void => {
     const target = eo.target as HTMLElement;
     const element = DEFAULT_LIST_CITIES.find(
       (item) => item.name === target.id
@@ -22,19 +24,14 @@ export const DefaultCitiesBtns: React.FC<IProps> = ({
   };
 
   return (
-    <>
+    <DefaultCitiesBtnsStyle>
       {citiesList.map((item) => {
         return (
-          <button
-            type="button"
-            key={item.name}
-            id={item.name}
-            onClick={changeCityHandler}
-          >
+          <Button key={item.name} id={item.name} onClick={changeCityHandler}>
             {item.name}
-          </button>
+          </Button>
         );
       })}
-    </>
+    </DefaultCitiesBtnsStyle>
   );
 };
