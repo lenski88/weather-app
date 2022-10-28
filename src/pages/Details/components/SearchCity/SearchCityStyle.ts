@@ -5,6 +5,10 @@ export const SearchCityStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+  }
 `;
 
 export const InputStyle = styled.input`
