@@ -60,7 +60,10 @@ export const hourltWeatherParser = (
   duration: number
 ) => {
   const lastitem = duration + 1;
-  const now = Date.now();
+  const now = new Date(
+    new Date().toLocaleString("en", { timeZone: data.timezone })
+  ).getTime();
+
   let tempFrom = 0;
   const time = data.hourly.time
     .filter((v, i) => {

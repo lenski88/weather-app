@@ -46,6 +46,7 @@ export const getHourlyWeather = async (
       latitude: lt,
       longitude: lg,
       hourly: PARAMS.hourly,
+      timezone: PARAMS.timezone,
     },
   });
   const data = hourltWeatherParser(response.data, duration);
