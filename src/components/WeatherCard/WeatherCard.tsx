@@ -1,6 +1,6 @@
 import React from "react";
 
-import { WeatherCardstyle } from "./WeahterCardStyle";
+import { WeatherCardstyle } from "./WeatherCardStyle";
 
 interface IProps {
   children: React.ReactNode;

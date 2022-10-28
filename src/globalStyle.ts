@@ -12,6 +12,8 @@ export const GlobalStyle = createGlobalStyle`
         width: 100vw;
         height: 100vh;
         background-color: ${COLORS.backgroundBody};
+        color: ${COLORS.fontColor};
+        overflow-x: hidden;
     }
 
     #root {

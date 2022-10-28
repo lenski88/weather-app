@@ -6,6 +6,7 @@ import { router } from "./routes";
 import { GlobalStyle } from "./globalStyle";
 
 import { MainContainer } from "./components/MainContainer/MainContainer";
+import { Footer } from "./components/Footer/Footer";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <GlobalStyle />
       <MainContainer>
         <RouterProvider router={router} />
+        <Footer />
       </MainContainer>
     </StrictMode>
   );
