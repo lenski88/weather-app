@@ -7,12 +7,15 @@ import { GlobalStyle } from "./globalStyle";
 
 import { MainContainer } from "./components/MainContainer/MainContainer";
 import { Footer } from "./components/Footer/Footer";
+import { Icon } from "./components/Icon/Icon";
+import { ICON_CLASSES, ICON_NAMES } from "./components/Icon/types/types";
 
 function App() {
   return (
     <StrictMode>
       <GlobalStyle />
       <MainContainer>
+        <Icon name={ICON_NAMES.SQUARE} className={ICON_CLASSES.SMALL_LIGHT} />
         <RouterProvider router={router} />
         <Footer />
       </MainContainer>

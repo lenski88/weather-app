@@ -11,6 +11,7 @@ export const COLORS = {
   backgroundCard: "#FB9039",
   fontColor: "#FFFFFF",
   borderColor: "#FB9039",
+  borderLightColor: "#FFFFFF",
 };
 
 export const DEFAULT_LIST_CITIES: IDefailtCities[] = [
