@@ -55,12 +55,16 @@ export const dailyWeatherParser = (
   };
 };
 
+// парсер данных почасового прогноза
 export const hourltWeatherParser = (
   data: IHourlyWeatherResponse,
   duration: number
 ) => {
   const lastitem = duration + 1;
-  const now = Date.now();
+  const now = new Date(
+    new Date().toLocaleString("en", { timeZone: data.timezone })
+  ).getTime();
+
   let tempFrom = 0;
   const time = data.hourly.time
     .filter((v, i) => {
@@ -83,7 +87,10 @@ export const hourltWeatherParser = (
   }, []);
 };
 
+// парсер данных названия города
 export const cityNameParser = (data: ILocationInfoResponse) => data.city;
+
+// парсер данных получения координат
 export const cityCoordsParser = (data: ICityCoordsResponse) => {
   if (!data) return null;
   return {

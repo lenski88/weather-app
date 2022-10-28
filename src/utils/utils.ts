@@ -1,11 +1,13 @@
 import { IForecastTypesKeys } from "../constants/constants";
 
+// приведение даты к нужному формату
 export function formatDateTime(date: Date): string {
   const month = date.getMonth() + 1;
   const day = date.getDate();
   return `${day}.${month}`;
 }
 
+// приведение названия города к нужному формату
 export const cityNameFormat = (name: string): string => {
   return name
     ?.split(" ")
@@ -13,6 +15,7 @@ export const cityNameFormat = (name: string): string => {
     .join(" ");
 };
 
+// генерация тайтла графика
 export const generateChartTitle = (
   valid: boolean,
   city: string,
