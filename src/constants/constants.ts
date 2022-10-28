@@ -50,3 +50,24 @@ export const PARAMS = {
   locale: "en",
   countCity: 1,
 };
+
+interface IForecastTypes {
+  hourly: IForecastTypesKeys;
+  daily: IForecastTypesKeys;
+}
+
+export interface IForecastTypesKeys {
+  type: string;
+  time: string;
+}
+
+export const FORECAST_TYPES: IForecastTypes = {
+  hourly: {
+    type: "Hourly",
+    time: "hours",
+  },
+  daily: {
+    type: "Daily",
+    time: "days",
+  },
+};

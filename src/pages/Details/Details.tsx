@@ -9,15 +9,17 @@ import { IDailyWheather, IHourlyWeather } from "../../api/types";
 import { Button } from "../../components/Button/Button";
 import {
   DETAILS_DAILY_FORECAST_DURATION,
+  FORECAST_TYPES,
   HOURLY_FORECAST_DURATION,
 } from "../../constants/constants";
-import { cityNameFormat } from "../../utils/utils";
+import { generateChartTitle } from "../../utils/utils";
 import { Chart } from "./components/Chart/Chart";
 import { SearchCity } from "./components/SearchCity/SearchCity";
 import { DetailsStyle } from "./DetailsStyle";
 
 export const Details: React.FC = () => {
   const [city, setCity] = useState<string | undefined>();
+  const [isValidInput, setIsValidInput] = useState<boolean>(true);
   const [hourlyTitle, setHourlyTitle] = useState<string>("");
   const [dailyTitle, setDailyTitle] = useState<string>("");
   const [houryWeather, setHourlyWeather] = useState<IHourlyWeather[] | null>(
@@ -65,13 +67,21 @@ export const Details: React.FC = () => {
     };
     fetch().then((data) => {
       if (!data) {
-        setHourlyTitle(`${city} not found`);
+        setIsValidInput(false);
+        setHourlyTitle(generateChartTitle(false, city as string));
         return;
       }
       fetchWeather(data.latitude, data.longitude);
+      setIsValidInput(true);
       if (city) {
-        setHourlyTitle(`Hourly weather forecast for ${HOURLY_FORECAST_DURATION} hours in
-      ${cityNameFormat(city)}`);
+        setHourlyTitle(
+          generateChartTitle(
+            true,
+            city,
+            FORECAST_TYPES.hourly,
+            HOURLY_FORECAST_DURATION
+          )
+        );
       }
     });
   };
@@ -94,11 +104,17 @@ export const Details: React.FC = () => {
   }, [city, dailyWeather?.length]);
 
   useLayoutEffect(() => {
-    setDailyTitle(`Daily weather forecast for ${
-      (dailyWeather as IDailyWheather[])?.length
-    } days in
-${cityNameFormat(city as string)}`);
-  }, [city, dailyWeather?.length]);
+    if (isValidInput)
+      setDailyTitle(
+        generateChartTitle(
+          true,
+          city as string,
+          FORECAST_TYPES.daily,
+          (dailyWeather as IDailyWheather[])?.length
+        )
+      );
+    else setDailyTitle(generateChartTitle(false, city as string));
+  }, [city, dailyWeather?.length, isValidInput]);
 
   const changeCity = (name: string) => {
     setCity(name);
