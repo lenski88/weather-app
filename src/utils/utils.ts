@@ -1,13 +1,12 @@
-export function formatDateTime(date: Date, dictionary: string[]): string {
-  const year = date.getFullYear();
-  const month = dictionary.filter((_month, index) => index === date.getMonth());
+export function formatDateTime(date: Date): string {
+  const month = date.getMonth() + 1;
   const day = date.getDate();
-  return `${day} ${month} ${year}`;
+  return `${day}.${month}`;
 }
 
 export const cityNameFormat = (name: string): string => {
   return name
-    .split(" ")
+    ?.split(" ")
     .map((item) => `${item[0].toUpperCase()}${item.slice(1)}`)
     .join(" ");
 };

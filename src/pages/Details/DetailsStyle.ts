@@ -6,4 +6,5 @@ export const DetailsStyle = styled.div`
   justify-content: space-around;
   align-items: center;
   width: 100%;
+  height: 100%;
 `;

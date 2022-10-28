@@ -32,23 +32,9 @@ export const DEFAULT_LIST_CITIES: IDefailtCities[] = [
   },
 ];
 
-export const HOME_FORECAST_DURATION = 3;
+export const HOME_DAILY_FORECAST_DURATION = 3;
+export const DETAILS_DAILY_FORECAST_DURATION = 10;
 export const HOURLY_FORECAST_DURATION = 10;
-
-export const months = [
-  "january",
-  "february",
-  "march",
-  "april",
-  "may",
-  "june",
-  "jule",
-  "august",
-  "september",
-  "october",
-  "november",
-  "december",
-];
 
 export const BASE_URL_FORECAST = "https://api.open-meteo.com/v1/forecast";
 export const BASE_URL_CITY_INFO =

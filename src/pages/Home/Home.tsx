@@ -9,7 +9,7 @@ import { IDailyWheather, TCurrentWeatherData } from "../../api/types";
 import { ICityLocationState } from "./types/types";
 import {
   DEFAULT_LIST_CITIES,
-  HOME_FORECAST_DURATION,
+  HOME_DAILY_FORECAST_DURATION,
 } from "../../constants/constants";
 
 import { CurrentWeather } from "./components/CurrentWeather/CurrentWeather";
@@ -28,16 +28,19 @@ export const Home: React.FC = () => {
   const [currentWeather, setCurrentWeather] =
     useState<TCurrentWeatherData | null>(null);
 
+  const [units, setUnits] = useState<string>("");
+
   const navigate = useNavigate();
 
   const fetchWeather = (lt?: number, lg?: number): void => {
     const fetch = () => {
-      const data = getDailyWheather(HOME_FORECAST_DURATION, lt, lg);
+      const data = getDailyWheather(HOME_DAILY_FORECAST_DURATION, lt, lg);
       return data;
     };
     fetch().then((data) => {
       setDailyWeather(data.dailyWheather);
       setCurrentWeather(data.currentWheather);
+      setUnits(data.units.temperature_2m_max);
     });
   };
 
@@ -109,7 +112,7 @@ export const Home: React.FC = () => {
       )?.name as string,
     });
     const fetch = () => {
-      const data = getDailyWheather(HOME_FORECAST_DURATION, lt, lg);
+      const data = getDailyWheather(HOME_DAILY_FORECAST_DURATION, lt, lg);
       return data;
     };
     fetch().then((data) => {
@@ -124,7 +127,7 @@ export const Home: React.FC = () => {
         city={cityLocation?.cityName}
         currentWeather={currentWeather}
       />
-      <DailyWheather daily={dailyWheather} />
+      <DailyWheather daily={dailyWheather} units={units} />
       <DefaultCitiesBtns cbChangeDefaultCity={changeDefaultCity} />
     </HomeStyle>
   ) : null;

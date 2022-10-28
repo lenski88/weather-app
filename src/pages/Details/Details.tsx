@@ -1,32 +1,61 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getCoordsByCityName, getHourlyWeather } from "../../api/api";
-import { IHourlyWeather } from "../../api/types";
+import {
+  getCoordsByCityName,
+  getDailyWheather,
+  getHourlyWeather,
+} from "../../api/api";
+import { IDailyWheather, IHourlyWeather } from "../../api/types";
 import { Button } from "../../components/Button/Button";
-import { HOURLY_FORECAST_DURATION } from "../../constants/constants";
+import {
+  DETAILS_DAILY_FORECAST_DURATION,
+  HOURLY_FORECAST_DURATION,
+} from "../../constants/constants";
 import { cityNameFormat } from "../../utils/utils";
 import { Chart } from "./components/Chart/Chart";
 import { SearchCity } from "./components/SearchCity/SearchCity";
-import { DetailsStyle } from "./DdetailsStyle";
+import { DetailsStyle } from "./DetailsStyle";
 
 export const Details: React.FC = () => {
   const [city, setCity] = useState<string | undefined>();
-  const [legend, setLegend] = useState<string>("");
+  const [hourlyTitle, setHourlyTitle] = useState<string>("");
+  const [dailyTitle, setDailyTitle] = useState<string>("");
   const [houryWeather, setHourlyWeather] = useState<IHourlyWeather[] | null>(
+    null
+  );
+
+  const [dailyWeather, setDailyWeather] = useState<IDailyWheather[] | null>(
     null
   );
 
   const { cityName } = useParams();
   const navigate = useNavigate();
 
-  const fetchHourlyWeather = (lt: number, lg: number): void => {
-    const fetch = () => {
-      const data = getHourlyWeather(HOURLY_FORECAST_DURATION, lt, lg);
-      return data;
+  const fetchWeather = (lt: number, lg: number): void => {
+    const hourlyForecastWeather = () => {
+      const hourlyWeatherData = getHourlyWeather(
+        HOURLY_FORECAST_DURATION,
+        lt,
+        lg
+      );
+      return hourlyWeatherData;
     };
-    fetch().then((data) => {
-      setHourlyWeather(data);
-    });
+
+    const dailyForecastWeather = () => {
+      const dailyWeatherData = getDailyWheather(
+        DETAILS_DAILY_FORECAST_DURATION,
+        lt,
+        lg
+      );
+      return dailyWeatherData;
+    };
+
+    Promise.all([hourlyForecastWeather(), dailyForecastWeather()]).then(
+      (data) => {
+        setHourlyWeather(data[0]);
+        setDailyWeather(data[1].dailyWheather);
+      }
+    );
   };
 
   const fetchCityCoords = (name: string): void => {
@@ -36,14 +65,14 @@ export const Details: React.FC = () => {
     };
     fetch().then((data) => {
       if (!data) {
-        setLegend(`${city} not found`);
+        setHourlyTitle(`${city} not found`);
         return;
       }
-      fetchHourlyWeather(data.latitude, data.longitude);
-
-      if (city)
-        setLegend(`Hourly weather forecast for ${HOURLY_FORECAST_DURATION} hours in
+      fetchWeather(data.latitude, data.longitude);
+      if (city) {
+        setHourlyTitle(`Hourly weather forecast for ${HOURLY_FORECAST_DURATION} hours in
       ${cityNameFormat(city)}`);
+      }
     });
   };
 
@@ -53,7 +82,8 @@ export const Details: React.FC = () => {
 
   useEffect(() => {
     const location = JSON.parse(sessionStorage.getItem("location") as string);
-    fetchHourlyWeather(location.lt, location.lg);
+    if (cityName?.toLowerCase() !== location.cityName.toLowerCase())
+      fetchWeather(location.lt, location.lg);
   }, []);
 
   useEffect(() => {
@@ -61,7 +91,14 @@ export const Details: React.FC = () => {
       fetchCityCoords(city);
       navigate(`/details/${city}`);
     }
-  }, [city]);
+  }, [city, dailyWeather?.length]);
+
+  useLayoutEffect(() => {
+    setDailyTitle(`Daily weather forecast for ${
+      (dailyWeather as IDailyWheather[])?.length
+    } days in
+${cityNameFormat(city as string)}`);
+  }, [city, dailyWeather?.length]);
 
   const changeCity = (name: string) => {
     setCity(name);
@@ -74,7 +111,8 @@ export const Details: React.FC = () => {
   return (
     <DetailsStyle>
       <SearchCity cbChangeCity={changeCity} />
-      {houryWeather && <Chart data={houryWeather} legend={legend} />}
+      {houryWeather && <Chart data={houryWeather} title={hourlyTitle} />}
+      {dailyWeather && <Chart data={dailyWeather} title={dailyTitle} />}
       <Button onClick={goHomeHandler}>Home</Button>
     </DetailsStyle>
   );
