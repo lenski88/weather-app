@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCoordsByCityName, getHourlyWeather } from "../../api/api";
 import { IHourlyWeather } from "../../api/types";
+import { Button } from "../../components/Button/Button";
 import { HOURLY_FORECAST_DURATION } from "../../constants/constants";
 import { cityNameFormat } from "../../utils/utils";
 import { Chart } from "./components/Chart/Chart";
 import { SearchCity } from "./components/SearchCity/SearchCity";
+import { DetailsStyle } from "./DdetailsStyle";
 
 export const Details: React.FC = () => {
   const [city, setCity] = useState<string | undefined>();
@@ -65,10 +67,15 @@ export const Details: React.FC = () => {
     setCity(name);
   };
 
+  const goHomeHandler = () => {
+    navigate(`/${city}`);
+  };
+
   return (
-    <div>
+    <DetailsStyle>
       <SearchCity cbChangeCity={changeCity} />
       {houryWeather && <Chart data={houryWeather} legend={legend} />}
-    </div>
+      <Button onClick={goHomeHandler}>Home</Button>
+    </DetailsStyle>
   );
 };
