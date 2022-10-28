@@ -6,7 +6,6 @@ export const WeatherCardstyle = styled.div<{ alignSelf: boolean }>`
   width: 300px;
   height: 200px;
   background-color: ${COLORS.backgroundCard};
-  color: ${COLORS.fontColor};
   line-height: 2;
   border-radius: 5px;
   padding: 10px 10px;

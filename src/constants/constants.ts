@@ -71,3 +71,5 @@ export const FORECAST_TYPES: IForecastTypes = {
     time: "days",
   },
 };
+
+export const ERROR_MESSAGE = "Page not found :(";

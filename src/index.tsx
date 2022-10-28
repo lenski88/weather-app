@@ -13,6 +13,7 @@ function App() {
       <GlobalStyle />
       <MainContainer>
         <RouterProvider router={router} />
+        <footer>Data according</footer>
       </MainContainer>
     </StrictMode>
   );
