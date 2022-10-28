@@ -1,30 +1,63 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getCoordsByCityName, getHourlyWeather } from "../../api/api";
-import { IHourlyWeather } from "../../api/types";
-import { HOURLY_FORECAST_DURATION } from "../../constants/constants";
-import { cityNameFormat } from "../../utils/utils";
+import {
+  getCoordsByCityName,
+  getDailyWheather,
+  getHourlyWeather,
+} from "../../api/api";
+import { IDailyWheather, IHourlyWeather } from "../../api/types";
+import { Button } from "../../components/Button/Button";
+import {
+  DETAILS_DAILY_FORECAST_DURATION,
+  FORECAST_TYPES,
+  HOURLY_FORECAST_DURATION,
+} from "../../constants/constants";
+import { generateChartTitle } from "../../utils/utils";
 import { Chart } from "./components/Chart/Chart";
 import { SearchCity } from "./components/SearchCity/SearchCity";
+import { DetailsStyle } from "./DetailsStyle";
 
 export const Details: React.FC = () => {
   const [city, setCity] = useState<string | undefined>();
-  const [legend, setLegend] = useState<string>("");
+  const [isValidInput, setIsValidInput] = useState<boolean>(true);
+  const [hourlyTitle, setHourlyTitle] = useState<string>("");
+  const [dailyTitle, setDailyTitle] = useState<string>("");
   const [houryWeather, setHourlyWeather] = useState<IHourlyWeather[] | null>(
+    null
+  );
+
+  const [dailyWeather, setDailyWeather] = useState<IDailyWheather[] | null>(
     null
   );
 
   const { cityName } = useParams();
   const navigate = useNavigate();
 
-  const fetchHourlyWeather = (lt: number, lg: number): void => {
-    const fetch = () => {
-      const data = getHourlyWeather(HOURLY_FORECAST_DURATION, lt, lg);
-      return data;
+  const fetchWeather = (lt: number, lg: number): void => {
+    const hourlyForecastWeather = () => {
+      const hourlyWeatherData = getHourlyWeather(
+        HOURLY_FORECAST_DURATION,
+        lt,
+        lg
+      );
+      return hourlyWeatherData;
     };
-    fetch().then((data) => {
-      setHourlyWeather(data);
-    });
+
+    const dailyForecastWeather = () => {
+      const dailyWeatherData = getDailyWheather(
+        DETAILS_DAILY_FORECAST_DURATION,
+        lt,
+        lg
+      );
+      return dailyWeatherData;
+    };
+
+    Promise.all([hourlyForecastWeather(), dailyForecastWeather()]).then(
+      (data) => {
+        setHourlyWeather(data[0]);
+        setDailyWeather(data[1].dailyWheather);
+      }
+    );
   };
 
   const fetchCityCoords = (name: string): void => {
@@ -34,14 +67,22 @@ export const Details: React.FC = () => {
     };
     fetch().then((data) => {
       if (!data) {
-        setLegend(`${city} not found`);
+        setIsValidInput(false);
+        setHourlyTitle(generateChartTitle(false, city as string));
         return;
       }
-      fetchHourlyWeather(data.latitude, data.longitude);
-
-      if (city)
-        setLegend(`Hourly weather forecast for ${HOURLY_FORECAST_DURATION} hours in
-      ${cityNameFormat(city)}`);
+      fetchWeather(data.latitude, data.longitude);
+      setIsValidInput(true);
+      if (city) {
+        setHourlyTitle(
+          generateChartTitle(
+            true,
+            city,
+            FORECAST_TYPES.hourly,
+            HOURLY_FORECAST_DURATION
+          )
+        );
+      }
     });
   };
 
@@ -51,7 +92,8 @@ export const Details: React.FC = () => {
 
   useEffect(() => {
     const location = JSON.parse(sessionStorage.getItem("location") as string);
-    fetchHourlyWeather(location.lt, location.lg);
+    if (cityName?.toLowerCase() !== location.cityName.toLowerCase())
+      fetchWeather(location.lt, location.lg);
   }, []);
 
   useEffect(() => {
@@ -59,16 +101,35 @@ export const Details: React.FC = () => {
       fetchCityCoords(city);
       navigate(`/details/${city}`);
     }
-  }, [city]);
+  }, [city, dailyWeather?.length]);
+
+  useLayoutEffect(() => {
+    if (isValidInput)
+      setDailyTitle(
+        generateChartTitle(
+          true,
+          city as string,
+          FORECAST_TYPES.daily,
+          (dailyWeather as IDailyWheather[])?.length
+        )
+      );
+    else setDailyTitle(generateChartTitle(false, city as string));
+  }, [city, dailyWeather?.length, isValidInput]);
 
   const changeCity = (name: string) => {
     setCity(name);
   };
 
+  const goHomeHandler = () => {
+    navigate(`/${city}`);
+  };
+
   return (
-    <div>
+    <DetailsStyle>
       <SearchCity cbChangeCity={changeCity} />
-      {houryWeather && <Chart data={houryWeather} legend={legend} />}
-    </div>
+      {houryWeather && <Chart data={houryWeather} title={hourlyTitle} />}
+      {dailyWeather && <Chart data={dailyWeather} title={dailyTitle} />}
+      <Button onClick={goHomeHandler}>Home</Button>
+    </DetailsStyle>
   );
 };

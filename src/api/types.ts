@@ -102,7 +102,7 @@ export type TCurrentWeatherData = Pick<
 
 export interface IDailyWheather {
   time: string;
-  temp: string;
+  temp: number;
 }
 
 export interface IHourlyWeather {

@@ -7,20 +7,20 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-import { IHourlyWeather } from "../../../../api/types";
+import { IDailyWheather, IHourlyWeather } from "../../../../api/types";
 
 import { COLORS } from "../../../../constants/constants";
 import { ChartStyle } from "./ChartStyle";
 
 interface IProps {
-  data: IHourlyWeather[];
-  legend: string;
+  data: IHourlyWeather[] | IDailyWheather[];
+  title: string;
 }
 
-export const Chart: React.FC<IProps> = ({ data, legend }) => {
+export const Chart: React.FC<IProps> = ({ data, title }) => {
   return (
     <ChartStyle>
-      <p>{legend}</p>
+      <p>{title}</p>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
           width={500}

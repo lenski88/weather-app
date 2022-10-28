@@ -6,7 +6,7 @@ export const ChartStyle = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
+  width: 100%;
   & p {
     color: ${COLORS.fontColor};
     padding: 10px 0;

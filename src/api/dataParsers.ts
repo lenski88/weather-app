@@ -9,14 +9,13 @@ import {
   ICityCoordsResponse,
 } from "./types";
 import { formatDateTime } from "../utils/utils";
-import { months } from "../constants/constants";
 
 const currentWeatherParser = (
   currentWheather: ICurrentWeather,
   units: IUnits
 ) => ({
   temperature: `${currentWheather.temperature} ${units.temperature_2m_max}`,
-  time: formatDateTime(new Date(currentWheather.time), months),
+  time: formatDateTime(new Date(currentWheather.time)),
   windspeed: `${currentWheather.windspeed} kmh`,
 });
 
@@ -34,8 +33,8 @@ export const dailyWeatherParser = (
   const dailyWheather = date.reduce(
     (acc: IDailyWheather[], v: Date, i: number): IDailyWheather[] => {
       acc.push({
-        time: formatDateTime(new Date(v), months),
-        temp: `${Math.round(temp[i])} ${data.daily_units.temperature_2m_max}`,
+        time: formatDateTime(new Date(v)),
+        temp: Math.round(temp[i]),
       });
       return acc;
     },
@@ -47,9 +46,12 @@ export const dailyWeatherParser = (
     data.daily_units
   );
 
+  const units = data.daily_units;
+
   return {
     dailyWheather,
     currentWheather,
+    units,
   };
 };
 
