@@ -55,6 +55,7 @@ export const dailyWeatherParser = (
   };
 };
 
+// парсер данных почасового прогноза
 export const hourltWeatherParser = (
   data: IHourlyWeatherResponse,
   duration: number
@@ -86,7 +87,10 @@ export const hourltWeatherParser = (
   }, []);
 };
 
+// парсер данных названия города
 export const cityNameParser = (data: ILocationInfoResponse) => data.city;
+
+// парсер данных получения координат
 export const cityCoordsParser = (data: ICityCoordsResponse) => {
   if (!data) return null;
   return {

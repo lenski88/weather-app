@@ -5,6 +5,7 @@ export interface IDefailtCities {
   isDefault?: boolean;
 }
 
+// используемые цвета
 export const COLORS = {
   backgroundBody: "#1F3044",
   backgroundContainer: "#646C79",
@@ -14,6 +15,7 @@ export const COLORS = {
   borderLightColor: "#FFFFFF",
 };
 
+// города по умолчанию
 export const DEFAULT_LIST_CITIES: IDefailtCities[] = [
   {
     name: "Minsk",
@@ -33,10 +35,14 @@ export const DEFAULT_LIST_CITIES: IDefailtCities[] = [
   },
 ];
 
+// максимальное количество дней прогноза на главной странице
 export const HOME_DAILY_FORECAST_DURATION = 3;
+// максимальное количество дней прогноза на побочной странице
 export const DETAILS_DAILY_FORECAST_DURATION = 10;
+// максимальное количество часов прогноза на побочной странице
 export const HOURLY_FORECAST_DURATION = 10;
 
+// url's запросов
 export const BASE_URL_FORECAST = "https://api.open-meteo.com/v1/forecast";
 export const BASE_URL_CITY_INFO =
   "https://api.bigdatacloud.net/data/reverse-geocode-client";
@@ -44,6 +50,7 @@ export const BASE_URL_CITY_INFO =
 export const BASE_URL_GET_COORDS =
   "https://geocoding-api.open-meteo.com/v1/search";
 
+// парметры запросов
 export const PARAMS = {
   daily: "temperature_2m_max",
   hourly: "temperature_2m",
@@ -62,6 +69,7 @@ export interface IForecastTypesKeys {
   time: string;
 }
 
+// типы прогнозов для тайтла графиков
 export const FORECAST_TYPES: IForecastTypes = {
   hourly: {
     type: "Hourly",
@@ -73,4 +81,5 @@ export const FORECAST_TYPES: IForecastTypes = {
   },
 };
 
+// сообщение об ошибке
 export const ERROR_MESSAGE = "Page not found :(";

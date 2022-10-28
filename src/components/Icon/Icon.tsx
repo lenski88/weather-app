@@ -7,6 +7,7 @@ interface IProps {
   className: string;
 }
 
+// допустымые иконки
 const icons = {
   circle: <circle cx="50%" cy="50%" r="45%" />,
   square: <rect x={0} y={0} width="100%" height="100%" />,

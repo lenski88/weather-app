@@ -14,10 +14,12 @@ import {
   cityCoordsParser,
 } from "./dataParsers";
 
+// определение города по умолчанию
 export const cityByDefault = DEFAULT_LIST_CITIES.find(
   (item) => item.isDefault
 ) as IDefailtCities;
 
+// получение данных ежедневной погоды
 export const getDailyWheather = async (
   duration: number,
   lt: number = cityByDefault.latitude,
@@ -36,6 +38,7 @@ export const getDailyWheather = async (
   return data;
 };
 
+// получение данных почасового прогноза
 export const getHourlyWeather = async (
   duration: number,
   lt: number,
@@ -53,6 +56,7 @@ export const getHourlyWeather = async (
   return data;
 };
 
+// получение названия города по координатам
 export const getCityInfoByCoords = async (lt: number, lg: number) => {
   const response = await axios.get(BASE_URL_CITY_INFO, {
     params: {
@@ -65,6 +69,7 @@ export const getCityInfoByCoords = async (lt: number, lg: number) => {
   return city;
 };
 
+// получение координатат по названию города
 export const getCoordsByCityName = async (name: string) => {
   const response = await axios.get(BASE_URL_GET_COORDS, {
     params: {
