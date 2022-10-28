@@ -9,4 +9,5 @@ export const WeatherCardstyle = styled.div<{ alignSelf: boolean }>`
   border-radius: 5px;
   padding: 10px 50px 10px 10px;
   margin: 10px 10px;
+  z-index: 10;
 `;
